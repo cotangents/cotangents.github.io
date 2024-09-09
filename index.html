@@ -1,10 +1,126 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="utf-8">
-<title>OvO</title>
+    <meta charset="UTF-8">
+    <title>MyBlog</title>
+    <style>
+        body, html {
+            margin: 0;
+            height: 100%; /* 确保html和body的高度为100% */
+            width: 100%;
+            overflow-x: hidden;
+            background: #e9e8f0
+        }
+        header {
+            background-image: url("wallpaper.png");
+            background-size: cover; /* 使背景图片覆盖整个容器 */
+            background-position: center; /* 使背景图片居中 */
+            background-attachment: fixed;
+            height: 100vh; /* 设置容器高度为视口高度的100% */
+            position: relative;
+            display: flex;
+            justify-content: center;
+            font-weight: bold;
+        }
+        nav {
+            align-self: start;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            width: 100vw;
+            padding-top: 2vh;
+            padding-inline: 2vw;
+        }
+        nav a {
+            text-decoration: none;
+            padding-inline: 0.5vw;
+        }
+        #home a{
+            font-size: 1.6em; /* 设置字体大小 */
+            color: #e9e8f0; /* 设置字体颜色 */
+        }
+        #menu a {
+            font-size: 1em; /* 设置字体大小 */
+            color: #29292d; /* 设置字体颜色 */
+        }
+        #layer {
+            position: absolute;
+            align-self: center;
+        }
+        table {
+            border-collapse: separate;
+            border-spacing: 1.2vw 0.4vw;/*sqrt(3)=26/15,, x = 2*15 - 2r, y = 26/2 - r*/
+        }
+        tr {
+            display: table;
+            margin: 0 auto;
+        }
+        td {
+            width: 1.8vw;
+            height: 1.8vw;
+            border: none;
+            border-radius: 50%;
+            background-color: #e9e8f080;
+        }
+        #info {
+            position: absolute;
+            align-self: center;
+            text-align: center;
+        }
+        #title {
+            font-size: 2.5em; /* 设置字体大小 */
+            color: #e9e8f0; /* 设置字体颜色 */
+            margin: 0;
+        }
+        #subtitle{
+            font-size: 2em; /* 设置字体大小 */
+            color: #e9e8f0; /* 设置字体颜色 */
+            margin: 0;
+        }
+        main {
+            min-height: 80vh;
+            background: #e9e8f0;
+            padding-inline: 2vw;
+        }
+        footer {
+            display: flex;
+            justify-content: center; /* 水平居中 */
+            align-items: center; /* 垂直居中 */
+            background: #4b5974;
+            min-height: 20vh;
+        }
+    </style>
 </head>
 <body>
-    <h1>“把地球看作孤立导体球，电容也不过几百微法”</h1>
+    <header>
+        <nav>
+            <span id="home"><a href="">主页</a></span>
+            <span id="menu"><a href="">文章</a><a href="">匿名箱</a></span>
+        </nav>
+        <div id="layer"><table id="colander"></table></div>
+        <div id="info"><h1 id = "title">崔江任</h1><h2 id = "subtitle">Cui, Jiangren</h1></div>
+    </header>
+    <main class="main">
+        <div class="content">
+            <h1>标题</h1>
+            <h2>CS180</h2>
+            <a href="./cs180/proj_1/index.html">Project 1</a>
+        </div>
+    </main>
+    <footer>
+        <div class="date"></div>
+    </footer>
 </body>
+<script>
+    const row = 15, col = 26;
+    let colander = '';
+    for(let i = 1; i <= row; ++i){
+        colander += '<tr>';
+        for(let j = i & 1; j <= col; ++j){
+            colander += '<td></td>';
+        }
+        colander += '</tr>';
+    }
+    document.getElementById('colander').innerHTML = colander;
+</script>
 </html>
