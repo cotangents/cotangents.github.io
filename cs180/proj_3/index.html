@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CS180</title>
+    <style>
+        :root {
+            --gap: 10px;
+        }
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--gap);
+            margin-bottom: 10px;
+            margin-inline: 20vw;
+        }
+        .gallery img {
+            width: 100%;
+            object-fit: cover;
+        }
+        .gallery figure {
+            margin: 0;
+        }
+        .gallery figcaption {
+            text-align: center;
+        }
+        .big_gallery {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: var(--gap);
+            margin-bottom: 10px;
+            margin-inline: 20vw;
+        }
+        .big_gallery img {
+            width: 100%;
+            height: auto;
+        }
+        .big_gallery figure {
+            margin: 0;
+        }
+        .big_gallery figcaption {
+            text-align: center;
+        }
+        .h_gallery {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: var(--gap);
+            margin-bottom: 10px;
+            margin-inline: 20vw;
+        }
+        .h_gallery img {
+            width: 100%;
+            height: auto;
+        }
+        .v_gallery {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--gap);
+            margin-bottom: 10px;
+            margin-inline: 20vw;
+        }
+        .v_gallery img {
+            width: 100%;
+            height: auto;
+        }
+        .v_gallery figure {
+            margin: 0;
+        }
+        .v_gallery figcaption {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Project 3 - Cui, Jiangren</h1>
+    <h2>Face Morphing</h2>
+    <h3>Part 1</h3>
+    <h4>Defining Correspondences</h4>
+    <p>As for the selection of corresponding points, I initially fully adopted the library functions provided by dlib and mediapipe, and selected a part of the feature points they returned. In this way, I can get accurate points quickly without manual marking, without confusion of order, and can reproduce the results stably. However, after completing the five tasks as a whole, I suddenly found that manual marking is mandatory. I think the data points obtained through the library are also helpful for our manual marking, so the machine-marked points and their serial numbers will be displayed as a reference during manual marking. Whether to use automatic selection or manual marking can be adjusted in the code. I always add four corner points to retain the background. The serial numbers of the first four points are not included in the picture on the web page, but they will be displayed when running the program and selecting manual marking.</p>
+    <p>To get a fully even and perfectly bilaterally symmetrical segmentation, I calculated the triangulation using feature points extracted from my ID photo. A frontal ID photo with a calm expression performs better in this respect than the average of the feature points from two ordinary photos.</p>
+    <div class="gallery">
+        <figure>
+            <img src="media/me_tri.jpg">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/hxm_tri.jpg">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/points_2.jpg">
+            <figcaption></figcaption>
+        </figure>
+    </div>
+    <h4>Computing the "Mid-way Face"</h4>
+    <p>I did not use the calculation scheme for affine transformation provided in ed. I think that the matrix T of affine transformation should have such an effect that it can get the target vector v' when multiplied by the source vector v, that is, v' = Tv. Combined with the properties of the block matrix, we have M' = T M, where M = [v_1, v_2, v_3], M' = [v'_1, v'_2, v'_3]. So the matrix T can be obtained by the formula T = M' M^-1, and M and M' can be obtained by the coordinates of the two triangle vertices. Although matrix multiplication is also required, it is more convenient to get M and M' by directly stacking the triangle vertex coordinates.</p>
+    <p>Affine transformation of an image involves interpolation. We transform the coordinates of all pixels in the target image to the coordinates in the source image through affine transformation, and then interpolate them in the original image.</p>
+    <p>There are two details to explain here.</p>
+    <p>First, bilinear interpolation seems more logical, but the bilinear interpolation of griddata is very slow. I suspect that this is because griddata does not make full use of the distribution of data points. It accepts unstructured data points for interpolation. In other words, these points may be scattered. The program may need to spend some time to determine the nearest neighbor points. On the other hand, considering that we input photos, and the color changes in the natural world are relatively continuous, it is likely that the absolute value difference between many adjacent pixels will not exceed 1. Even if the interpolation here obtains a fine result, because the RGB data is an integer, those decimals will most likely be rounded, and the result will be exactly the same as the nearest neighbor interpolation. I kept the code for interpolation with griddata, but in practice, cv2.remap is used to interpolate the points after affine transformation, which is much faster. However, if the boundary mode of cv2.remap is set improperly, black edges will appear, and griddata does not have this problem.</p>
+    <p>Second, the functions that the mask generation relies on are likely to conflict with the previous method of marking points. Some functions believe that the coordinates are at the grid boundary, while some functions believe that the coordinates are inside the grid. The value of the boundary grid I set previously was not based on the width or height minus one. Polygon happens to be the type that believes that the coordinates are inside the grid, so there will be a boundary overflow here. I use cv2.fillConvexPoly to generate the mask. A slightly larger mask can ensure that there will be no gaps.</p>
+    <div class="gallery">
+        <figure>
+            <img src="media/cjr.jpg">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/me_to_hxm.jpg">
+            <figcaption>w = 0.5, d = 0.5</figcaption>
+        </figure>
+        <figure>
+            <img src="media/newhxm.jpg">
+            <figcaption></figcaption>
+        </figure>
+    </div>
+    <h4>The Morph Sequence</h4>
+    <p>Here is the video sequence from my photo to Huang Xiaoming's photo. The warp and cross dissolve are in the same proportions.</p>
+    <div class="gallery">
+        <img src="">
+        <img src="media/cjr.gif">
+        <img src="">
+    </div>
+    <h3>Part 2</h3>
+    <h4>The "Mean face" of a population</h4>
+    <p>I chose the Danish dataset, which includes 37 photos. For some reason, the data with more photos cannot be downloaded from the link given on the project website. I used the feature points that come with the dataset, as well as the four corner points. The following is the average Danish face.</p>
+    <p>There is one thing to note here. When calculating the average face, I originally planned not to save each individual face to save space, but it turns out that this can cause some problems. Specifically, each triangle will be added to the output image after the affine transformation, and we rely on the triangle mask to select the data. As mentioned before, because the mask is always slightly larger or smaller, in order to prevent gaps, the slightly larger version is selected. When calculating the individual images, each point is effectively only added once due to the control of the mask, and if there is overlap, the old value will be overwritten. However, if you average multiple images and want to add the current image triangle to the average image each time, you cannot add a mask to the average image because it already contains information from the previous image. This will cause repeated overlaps at the boundaries of the triangles, which appear very bright, and even cause numerical overflows, resulting in lines of abnormal colors.</p>
+    <div class="gallery">
+        <figure>
+            <img src="">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/dane.jpg">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="">
+            <figcaption></figcaption>
+        </figure>
+    </div>
+    <p>Below are some faces in the dataset deformed into an average face.</p>
+    <div class="big_gallery">
+        <figure>
+            <img src="media/data/01-1m.bmp">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/data/05-1m.bmp">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/data/06-1m.bmp">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/data/07-1m.bmp">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/data/08-1f.bmp">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/data/09-1m.bmp">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/dane/dane_0.jpg">
+            <figcaption>w = 1, d = 0</figcaption>
+        </figure>
+        <figure>
+            <img src="media/dane/dane_1.jpg">
+            <figcaption>w = 1, d = 0</figcaption>
+        </figure>
+        <figure>
+            <img src="media/dane/dane_2.jpg">
+            <figcaption>w = 1, d = 0</figcaption>
+        </figure>
+        <figure>
+            <img src="media/dane/dane_3.jpg">
+            <figcaption>w = 1, d = 0</figcaption>
+        </figure>
+        <figure>
+            <img src="media/dane/dane_4.jpg">
+            <figcaption>w = 1, d = 0</figcaption>
+        </figure>
+        <figure>
+            <img src="media/dane/dane_5.jpg">
+            <figcaption>w = 1, d = 0</figcaption>
+        </figure>
+    </div>
+    <p>Below is the average Danish face distorted to look like mine, and my face distorted to look like the average Danish face. Since I didn't want to adjust the previous program and manually annotate my own photos to the given points in the dataset, I re-annotated the average Danish face using my own criteria. Since my face is slightly turned to the side in the original photo, the result looks a bit asymmetrical.</p>
+    <p>Here I made a small adjustment to the code. The feature points of the upper and lower lips are dense, but it is necessary if we want to handle the situation where the teeth are exposed. In the average photo of the Danes, there is a situation where different feature points coincide with each other, which makes it impossible to use the method mentioned above to find the inverse of the matrix. I modified the code to calculate the pseudo-inverse when the inverse is not available to solve the problem.</p>
+    <div class="v_gallery">
+        <figure>
+            <img src="">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/cjr.jpg">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/me_to_dane.jpg">
+            <figcaption>w = 0, d = 1</figcaption>
+        </figure>
+        <figure>
+            <img src="">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/dane_to_me.jpg">
+            <figcaption>w = 1, d = 0</figcaption>
+        </figure>
+        <figure>
+            <img src="media/dane_re.jpg">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="">
+            <figcaption></figcaption>
+        </figure>
+    </div>
+    <h4>Caricatures: Extrapolating from the mean</h4>
+    <p>In this part, I extrapolated my own photo and the average Danish face to highlight my features. I still kept the weights summed to 1, but the ratio of my own photo was 1.25. Truncation or normalization is necessary here, otherwise the RGB values may overflow and appear abnormal colors after being converted back to unsigned integers. Visually, my face has become thinner and longer.</p>
+    <div class="gallery">
+        <figure>
+            <img src="media/extrap.jpg">
+            <figcaption>w = 1.25, d = 1.25</figcaption>
+        </figure>
+        <figure>
+            <img src="media/cjr.jpg">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/dane_re.jpg">
+            <figcaption></figcaption>
+        </figure>
+    </div>
+    <h3>Part 3</h3>
+    <h4>Bells and Whistles</h4>
+    <p>Finally, I changed the gender and expression. I did not use the average face because I could not find the average smiling face of Chinese women on the Internet. I used the smiling photo of @陈可乐啦, an up-loader on Bilibili and Xiaohongshu. Since the control points were selected on the upper and lower lips, you can see the teeth vaguely after the deformation. In order to make the picture not too scary and uncomfortable, I set the cross-fusion ratio to a smaller one. When the cross-fusion ratio is moderate, the effect of the teeth will be better.</p>
+    <div class="gallery">
+        <figure>
+            <img src="media/cjr.jpg">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/warp_me.jpg">
+            <figcaption>w = 0.75, d = 1</figcaption>
+        </figure>
+        <figure>
+            <img src="media/extra_me.jpg">
+            <figcaption>w = 0, d = 0.375</figcaption>
+        </figure>
+        <figure>
+            <img src="media/dissolve_me.jpg">
+            <figcaption>w = 1, d = 0.75</figcaption>
+        </figure>
+        <figure>
+            <img src="media/morph_me.jpg">
+            <figcaption>w = 0.75, d = 0.75</figcaption>
+        </figure>
+        <figure>
+            <img src="media/cjx.jpg">
+            <figcaption></figcaption>
+        </figure>
+    </div>
+    <p>I also implemented deformation algorithms other than triangulation and affine transformation. Specifically, I implemented tps (thin plate spline) to give a transformation from a source image to a target image. The general idea of tps is to get the interpolation from the source feature point to the target feature point through an overall affine transformation and a nonlinear transformation around each point according to the weight. The function of the nonlinear transformation used is r^2 log(r). The variables include 6 affine transformations and 2 weights for each point. We can get a matrix equation based on this. Due to time constraints, I did not figure out how to insert mathematical formulas into the web page, so I can only briefly explain it as follows. The matrix K consists of the radial function values between the source points. The matrix P consists of the homogenized source point coordinates. Through the combination of some block matrices, we can achieve something similar to the matrix equation of the previous affine transformation.</p>
+    <p>The matrix here is very large, but the good thing is that there is only one matrix for the entire image. I did not use the inverse of the matrix to calculate the parameters because that is too slow for large matrices. I finally changed the code here and before to use the solve function to calculate the weights.</p>    
+    <p>There used to be a bug in the implementation of rbf that I think is important. Initially, I used rbf to directly interpolate the transformed coordinates. However, I found that for the case where the points are not displaced, direct rbf interpolation does not give an identity mapping. In fact, rbf approaches 0 at a distance from the data point, which is determined by the properties of the radial function itself. Therefore, it must be combined with other linear things, and it is suitable for interpolating the difference.</p>
+    <p>I noticed that the results given by tps, at least on the images I tested, are similar to the results of the previous triangulation plus affine transformation. This may be due to the greater influence of the overall transformation. To this end, I tried to think about how to reduce the influence of the overall factor and highlight the local changes. I thought about directly multiplying the affine matrix by an attenuation factor, or modifying the values of some zeros previously filled in the matrix or vector, but they either cannot guarantee the accuracy of the interpolation, or cannot guarantee the identity mapping when the corresponding points are the same. In the end, I chose to use rbf to interpolate the changes between the source and target points, which is equivalent to fixing the affine transformation of tps as the identity mapping, and the variable is only the weight of the nonlinear part. This operation produces a liquefaction effect. I also implemented an interactive tool. You can liquefy in real time by dragging the points. The following is the effect of mixing tps and liquefaction on a face image, and the effect of dragging the feature points of the corners of the mouth to liquefy.</p>
+    <div class="gallery">
+        <figure>
+            <img src="media/rbf.jpg">
+            <figcaption>tps</figcaption>
+        </figure>
+        <figure>
+            <img src="media/liquify.jpg">
+            <figcaption>liquify</figcaption>
+        </figure>
+        <figure>
+            <img src="media/smile_me.jpg">
+            <figcaption>interact</figcaption>
+        </figure>
+    </div>
+    <p>There is also a bilibili video below to show the effect of the interactive tool. Since bilibili usually takes some time to generate the video link, I submitted the assignment and uploaded the video close to the deadline. If you can't find the embedded video yet, please come back later.</p>
+
+
+</body>
+</html>
