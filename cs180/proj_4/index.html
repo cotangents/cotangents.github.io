@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CS180</title>
+    <style>
+        :root {
+            --gap: 10px;
+        }
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--gap);
+            margin-bottom: 10px;
+            margin-inline: 5vw;
+        }
+        .gallery img {
+            width: 100%;
+            object-fit: cover;
+        }
+        .gallery img:hover {
+            transform: scale(1.25);
+        }
+        .gallery figure {
+            margin: 0;
+        }
+        .gallery figcaption {
+            text-align: center;
+        }
+        .big_gallery {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: var(--gap);
+            margin-bottom: 10px;
+            margin-inline: 5vw;
+        }
+        .big_gallery img {
+            width: 100%;
+            height: 100%;
+        }
+        .big_gallery img:hover {
+            transform: scale(1.6);
+        }
+        .big_gallery figure {
+            margin: 0;
+        }
+        .big_gallery figcaption {
+            text-align: center;
+        }
+        .h_gallery {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: var(--gap);
+            margin-bottom: 10px;
+            margin-inline: 20vw;
+        }
+        .h_gallery img {
+            width: 100%;
+            height: auto;
+        }
+        .h_gallery iframe {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            height: auto;
+        }
+        .v_gallery {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--gap);
+            margin-bottom: 10px;
+            margin-inline: 20vw;
+        }
+        .v_gallery img {
+            width: 100%;
+            height: auto;
+        }
+        .v_gallery figure {
+            margin: 0;
+        }
+        .v_gallery figcaption {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Project 4 - Cui, Jiangren</h1>
+    <h2>[Auto]Stitching Photo Mosaics</h2>
+    <h3>Part 1</h3>
+    <h4>Shoot the Pictures</h4>
+    <p>The images used in the first part of this project were taken from a <a href="https://www.bilibili.com/video/BV12q4y1L7rT/">video</a> on bilibili. In fact, since I had a midterm exam shortly before the deadline, I didn't have enough time to work on this part, and I might take the photos myself in the second part of the submission.</p>
+    <h4>Recover Homographies</h4>
+    <p>Recover homographies requires calculating the homography matrix H based on two sets of points. There is a detail here that took me some time to figure out. For the coordinates [wx', wy', w], w is linearly related to the coordinates [x, y, 1] before transformation. After normalizing to ordinary coordinates, it is easy to find that x, y and x', y' are not linearly related. Therefore, it is necessary to perform some transformations on the equations in order to solve them.</p>
+    <p>The known data are the common coordinates of the two sets of points. We only need to replace w in the equation with the bottom line of the matrix multiplication, and then move the terms to the left side of the equation to get an equation that is linear with respect to the eight variables in the homography matrix. I use the function lstsq to get an approximate solution.</p>
+    <h4>Warp the Images</h4>
+    <p>Deforming the image is very similar to the third project. However, we must first apply the forward transform to the four corners to get the extent of the final image. After obtaining the transformed dimensions, we can then apply the inverse transform to get the coordinates of the transformed pixels in the original image, and interpolate. There is a gap between the transformed quadrilateral and its rectangular border, which is handled here by setting it to 0 to facilitate visualization.</p>
+    <p>During the debugging process, I found such a situation. When the deformation is extreme, for example, when trying to change a rectangle with a large tilt angle back to its original state, some points will have w<0, and these points will appear in the wrong position. Of course, there is no information in those positions, so other points with w>0 are not affected. I consulted some materials and did some thinking on my own, and found that perspective projection sometimes transforms some images to the position behind the camera. In other words, we can't see them after the transformation, and we should remove them from the transformed image. However, the midterm exam made me lack time to do this. It should be relatively easy to give a mask in the original image with w>0.</p>
+    <p>I have a little trick for this part to make it easier to code. Sometimes some points have negative numbers in their coordinates. We can easily get an offset by transforming the coordinates of the four corners. Based on this, we can write the translation matrix. We do matrix multiplication of the homography matrix and the translation matrix, and use the new matrix to transform the coordinates, which is quite natural to achieve the translation.</p>
+    <h4>Image Rectification</h4>
+    <p>Restoring the rectangle does not contain much content in theory or code, but is used to verify the effect of the above homography matrix calculation and application. The results are as follows.</p>
+    <div class="gallery">
+        <figure>
+            <img src="media/000.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/001.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/002.png">
+            <figcaption></figcaption>
+        </figure>
+    </div>
+    <div class="gallery">
+        <figure>
+            <img src="media/004.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/005.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/006.png">
+            <figcaption></figcaption>
+        </figure>
+    </div>
+    <h4>Blend the images into a mosaic</h4>
+    <p>The overall mixed image is similar to the third project. In the specific implementation, I used some small tricks. In order to make the image smooth, the mask should be gradient. I used the cv2.distanceTransform function. This function is invalid when the mask array given by cv2.fillConvexPoly is exactly the entire rectangle. I added a certain padding around the array before processing and removed it when returning, so as to get the correct output. Of course, if I directly enlarge the image and mask to the same size as the output image, I should not encounter this problem, which is at the cost of higher space overhead.</p>
+    <p>We have two options, one is to normalize the mask before superimposing the image, and the other is to normalize the whole image after superimposing the image. I initially fell into the former idea, but because my mask size is the same as the size of each image after transformation, array indexing and slicing will become very complicated. Superimposing the weight of the mask while superimposing the image, and finally normalizing the whole image is more convenient for the current implementation, and it is also easy to rewrite it in the future to achieve simultaneous mixing of more images.</p>
+    <p>I have not yet added any frequency-decoration to the image, I think the gradient that relies solely on distance is satisfactory.</p>
+    <div class="big_gallery">
+        <img src="media/333.png">
+        <img src="media/33.png">
+        <img src="media/34.png">
+        <img src="media/44.png">
+        <img src="media/444.png">
+    </div>
+    <div class="big_gallery">
+        <img src="media/555.png">
+        <img src="media/55.png">
+        <img src="media/56.png">
+        <img src="media/66.png">
+        <img src="media/666.png">
+    </div>
+    <div class="big_gallery">
+        <img src="media/111.png">
+        <img src="media/11.png">
+        <img src="media/12.png">
+        <img src="media/22.png">
+        <img src="media/222.png">
+    </div>
+
+</body>
+</html>
