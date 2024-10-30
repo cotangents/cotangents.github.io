@@ -12,14 +12,11 @@
             grid-template-columns: repeat(3, 1fr);
             gap: var(--gap);
             margin-bottom: 10px;
-            margin-inline: 5vw;
+            margin-inline: 10vw;
         }
         .gallery img {
             width: 100%;
             object-fit: cover;
-        }
-        .gallery img:hover {
-            transform: scale(1.25);
         }
         .gallery figure {
             margin: 0;
@@ -32,14 +29,11 @@
             grid-template-columns: repeat(5, 1fr);
             gap: var(--gap);
             margin-bottom: 10px;
-            margin-inline: 5vw;
+            margin-inline: 10vw;
         }
         .big_gallery img {
             width: 100%;
             height: 100%;
-        }
-        .big_gallery img:hover {
-            transform: scale(1.6);
         }
         .big_gallery figure {
             margin: 0;
@@ -52,7 +46,7 @@
             grid-template-columns: repeat(1, 1fr);
             gap: var(--gap);
             margin-bottom: 10px;
-            margin-inline: 20vw;
+            margin-inline: 25vw;
         }
         .h_gallery img {
             width: 100%;
@@ -65,10 +59,10 @@
         }
         .v_gallery {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(2, 1fr);
             gap: var(--gap);
             margin-bottom: 10px;
-            margin-inline: 20vw;
+            margin-inline: 25vw;
         }
         .v_gallery img {
             width: 100%;
@@ -150,6 +144,60 @@
         <img src="media/22.png">
         <img src="media/222.png">
     </div>
+    <h3>Part 2</h3>
+    <h4>Harris Interest Point Detector</h4>
+    <p>For Harris corner detection, I used the sample code provided on the homework website. The following are the points of interest given by the sample code. Obviously, these points are too dense to be used directly for feature detection. In addition, since the selected pictures are cut from the video, the intensity of the subtitles is too high, so I truncated it to make the intensity map better visualized.</p>
+    <div class="v_gallery">
+        <img src="media/harris/harris_im.jpg">
+        <img src="media/harris/harris_1.jpg">
+    </div>
+    <h4>Adaptive Non-Maximal Suppression</h4>
+    <p>The idea of adaptive non-maximum suppression is a little difficult to understand, but it is not complicated to implement. Specifically, we calculate the shortest distance from a corner point to a nearby point with relatively high intensity, and then sort in descending order according to this distance, and select a certain number of points from front to back. This method can reduce the number of points, but it will not completely avoid concentrated points. This is because if the intensity difference of some nearby points is not large, no suppression will occur. We must tolerate this situation, otherwise it is likely that the local maximum points in the two images will be different due to slight differences in illumination, and a proper match cannot be obtained.</p>
+    <div class="h_gallery">
+        <img src="media/harris/harris_2.jpg">
+    </div>
+    <h4>Feature Descriptor Extraction</h4>
+    <p>The feature descriptors are downsampled from the neighborhood of the feature points. I normalized the feature descriptors to make them stable to perturbations such as lighting. I also implemented rotationally invariant feature descriptor extraction, see the last section.</p>
+    <div class="h_gallery">
+        <img src="media/harris/extract.jpg">
+    </div>
+    <h4>Feature Matching</h4>
+    <p>The method of feature matching is to calculate the distance between feature descriptors. We calculate the nearest neighbor and the next nearest neighbor in the other image for each point's corresponding descriptor, and compare the ratio of their distances with the threshold to control the matching. The paper recommends using a threshold of around 0.8 to ensure a balance between the number of points and accuracy. The situation in the experiment is that there are still a few mismatches around 0.8, and there is basically no mismatch problem when 0.5 is used as the threshold. Despite this, my pictures contain subtitles, and those subtitles happen to match. I still need some way to solve this problem.</p>
+    <div class="gallery">
+        <img src="media/m1/match_1.jpg">
+        <img src="media/m2/match_1.jpg">
+        <img src="media/m3/match_1.jpg">
+    </div>
+    <h4>RANSAC</h4>
+    <p>RANSAC can improve the robustness of the match. We repeatedly randomly select 4 points to calculate the homography matrix, count the points that are correctly converted, and finally select the matrix with the best effect. In addition, this algorithm is also helpful for solving image matching with subtitle. I made a slight modification to the algorithm to do this. When selecting points, I added a constraint on the minimum distance between points to ensure that points can be selected from a larger range, which reduces the probability that several points are all taken from subtitles. Of course, we can also downsample the image and directly perform a comparison similar to the first project, but this is less efficient and more complicated to implement.</p>
+    <p>Without RANSAC, it would be difficult to automatically remove these subtitles, since the number and strength of matches produced by the subtitles are likely to be higher than those produced by the image. Of course, simply cutting off the bottom edge of the image would solve the problem. However, I think that these prior constraints on the points also avoid spending too much time on bad choices. Even if the selected matches are all correct, they are too close to get good results.</p>
+    <div class="gallery">
+        <img src="media/m1/match_2.jpg">
+        <img src="media/m2/match_2.jpg">
+        <img src="media/m3/match_2.jpg">
+    </div>
+    <div class="v_gallery">
+        <img src="media/m1/result.jpg">
+        <img src="media/56.png">
+        <img src="media/m2/result.jpg">
+        <img src="media/34.png">
+        <img src="media/m3/result.jpg">
+        <img src="media/12.png">
+    </div>
+    <h4>Bells & Whistles</h4>
+    <p>In order to obtain a feature descriptor with rotation invariance, I calculated the local gradient direction according to the method in the paper, and then rotated the previously obtained feature descriptor. There is a problem here, that is, the coordinate system for calculating the gradient is different from the coordinate system for rotation, and the negative number of the angle must be used. I chose to rotate a previous image to demonstrate the effectiveness.</p>
+    <div class="h_gallery">
+        <img src="media/rotate/extract_1.jpg">
+    </div>
+    <div class="v_gallery">
+        <img src="media/rotate/match_1.jpg">
+        <img src="media/rotate/match_2.jpg">
+    </div>
+    <p>Because PS left a white border after rotating the image, the intersection on one side of the image is more obvious.</p>
+    <div class="h_gallery">
+        <img src="media/rotate/result.jpg">
+    </div>
+    <p>My favorite part about this experiment is that we were able to achieve great results by making small improvements over time.</p>
 
 </body>
 </html>
