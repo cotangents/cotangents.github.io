@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CS180</title>
+    <style>
+        :root {
+            --gap: 10px;
+        }
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: var(--gap);
+            margin-bottom: 10px;
+            margin-inline: 20vw;
+        }
+        .gallery img {
+            width: 100%;
+            object-fit: cover;
+        }
+        .gallery figure {
+            margin: 0;
+        }
+        .gallery figcaption {
+            text-align: center;
+        }
+        .gallery_1 {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: var(--gap);
+            margin-bottom: 10px;
+            margin-inline: 35vw;
+        }
+        .gallery_1 img {
+            width: 100%;
+            height: 100%;
+        }
+        .gallery_1 figure {
+            margin: 0;
+        }
+        .gallery_1 figcaption {
+            text-align: center;
+        }
+        .gallery_b5 {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: var(--gap);
+            margin-bottom: 10px;
+            margin-inline: 5vw;
+        }
+        .gallery_b5 img {
+            width: 100%;
+            height: 100%;
+        }
+        .gallery_b5 figure {
+            margin: 0;
+        }
+        .gallery_b5 figcaption {
+            text-align: center;
+        }
+        .gallery_3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--gap);
+            margin-bottom: 10px;
+            margin-inline: 35vw;
+        }
+        .gallery_3 img {
+            width: 100%;
+            height: 100%;
+        }
+        .gallery_3 figure {
+            margin: 0;
+        }
+        .gallery_3 figcaption {
+            text-align: center;
+        }
+        .gallery_5 {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: var(--gap);
+            margin-bottom: 10px;
+            margin-inline: 25vw;
+        }
+        .gallery_5 img {
+            width: 100%;
+            height: 100%;
+        }
+        .gallery_5 figure {
+            margin: 0;
+        }
+        .gallery_5 figcaption {
+            text-align: center;
+        }
+        .gallery_7 {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: var(--gap);
+            margin-bottom: 10px;
+            margin-inline: 15vw;
+        }
+        .gallery_7 img {
+            width: 100%;
+            height: 100%;
+        }
+        .gallery_7 figure {
+            margin: 0;
+        }
+        .gallery_7 figcaption {
+            text-align: center;
+        }
+        .gallery_s5 {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: var(--gap);
+            margin-bottom: 10px;
+            margin-inline: 37.5vw;
+        }
+        .gallery_s5 img {
+            width: 100%;
+            height: 100%;
+        }
+        .gallery_s5 figure {
+            margin: 0;
+        }
+        .gallery_s5 figcaption {
+            text-align: center;
+        }
+        .gallery_s7 {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: var(--gap);
+            margin-bottom: 10px;
+            margin-inline: 32.5vw;
+        }
+        .gallery_s7 img {
+            width: 100%;
+            height: 100%;
+        }
+        .gallery_s7 figure {
+            margin: 0;
+        }
+        .gallery_s7 figcaption {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Project 5 - Cui, Jiangren</h1>
+    <h2>Fun With Diffusion Models!</h2>
+    <h3>Part A</h3>
+    <h4>Setup</h4>
+    <p>The initial part requires us to test the DeepFloyd IF diffusion model to generate images. I set the random seed in the code to the original value 180 in the notebook. Below are the images with 10 and 20 iterations of the first phase. In the image with fewer steps, the rocket looks a bit strange and the portrait is black and white.</p>
+    <div class="gallery">
+        <figure>
+            <img src="media/0/l11.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/0/l22.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/0/l33.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/0/l1.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/0/l2.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/0/l3.png">
+            <figcaption></figcaption>
+        </figure>
+    </div>
+    <h4>Implementing the Forward Process</h4>
+    <p>For the forward process, in theory, noise needs to be added step by step according to a formula. However, it has been proven that noise can be added directly to the original image using another formula. The results for time steps 250, 500, and 750 are given below.</p>
+    <h4>Classical Denoising</h4>
+    <p>Gaussian blurring can be used to reduce the noise of an image. It is easy to find that this method does not work well when the noise content is high.</p>
+    <h4>One-Step Denoising</h4>
+    <p>According to the previous formula, the formula for one-step denoising can be reversed. The image after adding noise, the image denoised by Gaussian blur, and the image denoised in one step are as follows.</p>
+    <div class="gallery_3">
+        <figure>
+            <img src="media/1/1/n1.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/1/n2.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/1/n3.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/1/b1.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/1/b2.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/1/b3.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/1/c1.png">
+            <figcaption>250</figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/1/c2.png">
+            <figcaption>500</figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/1/c3.png">
+            <figcaption>750</figcaption>
+        </figure>
+    </div>
+    <h4>Iterative Denoising</h4>
+    <p>One-step denoising can produce a good image, but the edges of the image are still fuzzy. Considering that there must be some errors in the inference process, the gradual denoising reduces the difficulty of each inference and allows for certain adjustments in the subsequent inference steps, which should have better performance. In order to reduce time overhead, a compromise strategy is adopted, that is, denoising across time steps. The following are the outputs of time steps 690, 540, 390, 240, 90.</p>
+    <div class="gallery_7">
+        <figure>
+            <img src="media/1/2/1.png">
+            <figcaption>690</figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/2/2.png">
+            <figcaption>540</figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/2/3.png">
+            <figcaption>390</figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/2/4.png">
+            <figcaption>240</figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/2/5.png">
+            <figcaption>90</figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/2/6.png">
+            <figcaption>denoise</figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/2/7.png">
+            <figcaption>upsample</figcaption>
+        </figure>
+    </div>
+    <h4>Diffusion Model Sampling</h4>
+    <p>If we start with a random noise image and perform iterative noise reduction, we can generate images using the diffusion model. The generated images look very much like photographs, but the content is sometimes strange and seems to have no clear meaning.</p>
+    <div class="gallery_5">
+        <figure>
+            <img src="media/1/3/l1.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/3/l2.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/3/l3.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/3/l4.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/3/l5.png">
+            <figcaption></figcaption>
+        </figure>
+    </div>
+    <h4>Classifier-Free Guidance (CFG)</h4>
+    <p>The CFG method can solve the above problems. Specifically, it selects an empty text prompt and a set text prompt, generates two noise estimates, and then extrapolates the noise. Practice shows that the images obtained in this way are brighter (even fancy), the content is usually meaningful and clear objects, and in many subsequent experiments, there seems to be a strong tendency to output photos of people.</p>
+    <div class="gallery_5">
+        <figure>
+            <img src="media/1/4/l1.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/4/l2.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/4/l3.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/4/l4.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/4/l5.png">
+            <figcaption></figcaption>
+        </figure>
+    </div>
+    <h4>Image-to-image Translation</h4>
+    <p>If we add noise to the image and then do the above, we can get a new image that is similar to the original image but also related to the text prompt. Depending on the level of noise added, the new image tends to be closer to the original image and closer to the text prompt.</p>
+    <div class="gallery_7">
+        <figure>
+            <img src="media/1/7/l21.png">
+            <figcaption>1</figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/7/l22.png">
+            <figcaption>3</figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/7/l23.png">
+            <figcaption>5</figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/7/l24.png">
+            <figcaption>7</figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/7/l25.png">
+            <figcaption>10</figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/7/l26.png">
+            <figcaption>20</figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/ucb.png">
+            <figcaption>origin</figcaption>
+        </figure>
+    </div>
+    <h4>Editing Hand-Drawn and Web Images</h4>
+    <p>The homework website asked us to do this for hand-drawn images and web images. I chose my past sketches and doodles on exam papers as hand-drawn images. I chose the library photos on my high school website as web images. Although the trend of the generated images with noise level is consistent with the above analysis, the effect is not as good as I expected. My sketches turned into some three-dimensional shapes with no practical meaning when the noise level is low. My doodles did get pictures with similar color space distribution when the noise level is low, but the content is not what I originally wanted to draw. In fact, this is normal due to the low resolution. When the noise is high, the output almost becomes a portrait, which may be caused by the training data, which caused me some trouble later.</p>
+    <div class="gallery_7">
+        <figure>
+            <img src="media/1/im2im/1.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/im2im/3.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/im2im/5.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/im2im/7.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/im2im/10.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/im2im/20.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/5/1.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/im2im/21.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/im2im/23.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/im2im/25.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/im2im/27.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/im2im/210.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/im2im/220.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/5/2.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/im2im/31.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/im2im/33.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/im2im/35.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/im2im/37.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/im2im/310.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/im2im/320.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/5/3.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/im2im/41.png">
+            <figcaption>1</figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/im2im/43.png">
+            <figcaption>3</figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/im2im/45.png">
+            <figcaption>5</figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/im2im/47.png">
+            <figcaption>7</figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/im2im/410.png">
+            <figcaption>10</figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/im2im/420.png">
+            <figcaption>20</figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/5/4.png">
+            <figcaption>origin</figcaption>
+        </figure>
+    </div>
+    <h4>Inpainting</h4>
+    <p>I initially encountered some problems with the code for the image restoration part. We need to keep a portion of the image pixels unchanged, and in order to achieve good fusion, the image should have a consistent noise level with the portion being restored. If the predicted image is spliced with the original image forwarded at the current time step after each model inference, it will result in different noise levels in the two parts in the last few steps of denoising, which will cause noise points in the repaired area. If the bell tower photo is restored in this case, upsampling will turn those noise points into small colored lights, which looks interesting but is actually wrong. In other words, inside the loop, we should add noise to the original image according to the current parameters before entering the model and splicing it with the current image.</p>
+    <p>During the restoration process, CFG has a strong tendency to insert overly conspicuous objects into the image, especially portraits. It is likely that repeated attempts will be required to get a satisfactory result. In this sense, CFG is not so suitable for "restoration".</p>
+    <div class="gallery_5">
+        <figure>
+            <img src="media/1/6/i1.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/6/m1.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/6/r1.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/6/s1.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/6/l1.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/6/i2.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/6/m2.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/6/r2.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/6/s2.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/6/l2.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/6/i3.png">
+            <figcaption>origin</figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/6/m3.png">
+            <figcaption>mask</figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/6/r3.png">
+            <figcaption>hole</figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/6/s3.png">
+            <figcaption>inpaint</figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/6/l3.png">
+            <figcaption>upsample</figcaption>
+        </figure>
+    </div>
+    <h4>Text-Conditional Image-to-image Translation</h4>
+    <p>The following are the results of translating images under text prompts. The prompt words are all rocket.</p>
+    <div class="gallery_7">
+        <figure>
+            <img src="media/1/7/l11.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/7/l12.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/7/l13.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/7/l14.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/7/l15.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/7/l16.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/ucb.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/7/l31.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/7/l32.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/7/l33.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/7/l34.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/7/l35.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/7/l36.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/5/5.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/7/l41.png">
+            <figcaption>1</figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/7/l42.png">
+            <figcaption>3</figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/7/l43.png">
+            <figcaption>5</figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/7/l44.png">
+            <figcaption>7</figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/7/l45.png">
+            <figcaption>10</figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/7/l46.png">
+            <figcaption>20</figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/5/6.png">
+            <figcaption>origin</figcaption>
+        </figure>
+    </div>
+    <h4>Visual Anagrams</h4>
+    <p>In this section, the algorithm is fine-tuned to implement visual anagrams. The noise estimation takes the mean of the image in both the positive and negative directions, and finally an image with different contents from the two directions can be obtained. The mean may need to be adjusted appropriately according to the situation of the two prompt words. The influence of the face is usually stronger, and increasing the weight of the other side often leads to better results.</p>
+    <p>The prompt words used in the following images are:</p>
+    <p>"an oil painting of people around a campfire" & "an oil painting of an old man"</p>
+    <p>"an oil painting of a snowy mountain village" & "an oil painting of an old man"</p>
+    <p>"a rocket ship" & "an oil painting of an old man"</p>
+    <div class="gallery_3">
+        <figure>
+            <img src="media/1/8/l1.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/8/l2.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/8/l3.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/8/fl1.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/8/fl2.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/8/fl3.png">
+            <figcaption></figcaption>
+        </figure>
+    </div>
+    <h4>Hybrid Images</h4>
+    <p>In this section, the algorithm is also modified to implement hybrid images. The noise estimate is obtained by summing the low-frequency component of the noise estimate given by one prompt word and the high-frequency component given by another prompt word. There is no good way to adjust the signal strength here, so more attempts are needed to get relatively good results.</p>
+    <p>The prompt words used in the following images are:</p>
+    <p>"a lithograph of a skull" & "a lithograph of waterfalls"</p>
+    <p>"a pencil" & "a rocket ship"</p>
+    <p>"an oil painting of an old man" & "a lithograph of waterfalls"</p>
+    <div class="gallery_3">
+        <figure>
+            <img src="media/1/9/ss1.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/9/ss2.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/9/ss3.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/9/l1.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/9/l2.png">
+            <figcaption></figcaption>
+        </figure>
+        <figure>
+            <img src="media/1/9/l3.png">
+            <figcaption></figcaption>
+        </figure>
+    </div>
+    <h3>Part B</h3>
+    <h4>Training a Single-Step Denoising UNet</h4>
+    <h4>Implementing the UNet</h4>
+    <p>The structure of Unet is shown in the figure. In the experiment, I used L2 as the loss function.</p>
+    <div class="gallery_1">
+        <figure>
+            <img src="media/2/unconditional_arch.png">
+            <figcaption></figcaption>
+        </figure>
+    </div>
+    <h4>Using the UNet to Train a Denoiser</h4>
+    <p>The loss curve of the model training is as follows.</p>
+    <div class="gallery_1">
+        <figure>
+            <img src="media/2/loss1.png">
+            <figcaption></figcaption>
+        </figure>
+    </div>
+    <p>The effects of single-step denoising on the test set at epochs 1 and 5 are as follows.</p>
+    <div class="gallery_s5">
+        <figure>
+            <img src="media/2/u_output_0_0.jpg">
+            <figcaption>1</figcaption>
+        </figure>
+        <figure>
+            <img src="media/2/u_output_0_1.jpg">
+            <figcaption>1</figcaption>
+        </figure>
+        <figure>
+            <img src="media/2/u_output_0_2.jpg">
+            <figcaption>1</figcaption>
+        </figure>
+        <figure>
+            <img src="media/2/u_output_0_3.jpg">
+            <figcaption>1</figcaption>
+        </figure>
+        <figure>
+            <img src="media/2/u_output_0_4.jpg">
+            <figcaption>1</figcaption>
+        </figure>
+    </div>
+    <br>
+    <div class="gallery_s5">
+        <figure>
+            <img src="media/2/u_output_4_0.jpg">
+            <figcaption>5</figcaption>
+        </figure>
+        <figure>
+            <img src="media/2/u_output_4_1.jpg">
+            <figcaption>5</figcaption>
+        </figure>
+        <figure>
+            <img src="media/2/u_output_4_2.jpg">
+            <figcaption>5</figcaption>
+        </figure>
+        <figure>
+            <img src="media/2/u_output_4_3.jpg">
+            <figcaption>5</figcaption>
+        </figure>
+        <figure>
+            <img src="media/2/u_output_4_4.jpg">
+            <figcaption>5</figcaption>
+        </figure>
+    </div>
+    <h4>Out-of-Distribution Testing</h4>
+    <p>The model was trained at a noise level of 0.5. The generalization performance of the model with single-step denoising at noise levels of 0, 0.2, 0.4, 0.5, 0.6, 0.8, and 1.0 was also tested in the experiment when the model was epoch 5.</p>
+    <div class="gallery_s7">
+        <figure>
+            <img src="media/2/u_output_sigma_0.0.jpg">
+            <figcaption>0.0</figcaption>
+        </figure>
+        <figure>
+            <img src="media/2/u_output_sigma_0.2.jpg">
+            <figcaption>0.2</figcaption>
+        </figure>
+        <figure>
+            <img src="media/2/u_output_sigma_0.4.jpg">
+            <figcaption>0.4</figcaption>
+        </figure>
+        <figure>
+            <img src="media/2/u_output_sigma_0.5.jpg">
+            <figcaption>0.5</figcaption>
+        </figure>
+        <figure>
+            <img src="media/2/u_output_sigma_0.6.jpg">
+            <figcaption>0.6</figcaption>
+        </figure>
+        <figure>
+            <img src="media/2/u_output_sigma_0.8.jpg">
+            <figcaption>0.8</figcaption>
+        </figure>
+        <figure>
+            <img src="media/2/u_output_sigma_1.0.jpg">
+            <figcaption>1.0</figcaption>
+        </figure>
+    </div>
+    <h4>Training a Diffusion Model</h4>
+    <h4>Adding Time Conditioning to UNet</h4>
+    <p>In order to implement the diffusion model, the time condition is added to the neural network. The modified network structure is shown in the figure.</p>
+    <div class="gallery_1">
+        <figure>
+            <img src="media/2/conditional_arch.png">
+            <figcaption></figcaption>
+        </figure>
+    </div>
+    <h4>Training the UNet</h4>
+    <p>The training loss curve is as follows.</p>
+    <div class="gallery_1">
+        <figure>
+            <img src="media/2/loss2.png">
+            <figcaption></figcaption>
+        </figure>
+    </div>
+    <h4>Sampling from the UNet</h4>
+    <p>The model starts by generating images from random noise. Below is the process of generating images at epochs 1, 5, 10, 15, and 20.</p>
+    <div class="gallery_b5">
+        <figure>
+            <img src="media/2/t_output_0.gif">
+            <figcaption>1</figcaption>
+        </figure>
+        <figure>
+            <img src="media/2/t_output_4.gif">
+            <figcaption>5</figcaption>
+        </figure>
+        <figure>
+            <img src="media/2/t_output_9.gif">
+            <figcaption>10</figcaption>
+        </figure>
+        <figure>
+            <img src="media/2/t_output_14.gif">
+            <figcaption>15</figcaption>
+        </figure>
+        <figure>
+            <img src="media/2/t_output_19.gif">
+            <figcaption>20</figcaption>
+        </figure>
+    </div>
+    <h4>Adding Class-Conditioning to UNet</h4>
+    <p>The model does produce valid output, but it is not good enough. Combining the experience in the previous part, by adding category conditions to the neural network. The loss curve of training is as follows.</p>
+    <div class="gallery_1">
+        <figure>
+            <img src="media/2/loss3.png">
+            <figcaption></figcaption>
+        </figure>
+    </div>
+    <h4>Sampling from the Class-Conditioned UNet</h4>
+    <p>Now the model can accurately generate images for the given digit category. Below is the process of generating images at epochs 1, 5, 10, 15, and 20. Even at a small epoch, the effect is already very good.</p>
+    <div class="gallery_b5">
+        <figure>
+            <img src="media/2/c_output_0.gif">
+            <figcaption>1</figcaption>
+        </figure>
+        <figure>
+            <img src="media/2/c_output_4.gif">
+            <figcaption>5</figcaption>
+        </figure>
+        <figure>
+            <img src="media/2/c_output_9.gif">
+            <figcaption>10</figcaption>
+        </figure>
+        <figure>
+            <img src="media/2/c_output_14.gif">
+            <figcaption>15</figcaption>
+        </figure>
+        <figure>
+            <img src="media/2/c_output_19.gif">
+            <figcaption>20</figcaption>
+        </figure>
+    </div>
+
+</body>
+</html>
