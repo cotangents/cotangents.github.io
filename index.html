@@ -36,31 +36,31 @@
             padding-inline: 0.5vw;
         }
         #home a{
-            font-size: 1.6em; /* 设置字体大小 */
+            font-size: 1.2em; /* 设置字体大小 */
             color: #e9e8f0; /* 设置字体颜色 */
         }
         #menu a {
-            font-size: 1em; /* 设置字体大小 */
+            font-size: 1.2em; /* 设置字体大小 */
             color: #29292d; /* 设置字体颜色 */
         }
         #layer {
             position: absolute;
             align-self: center;
         }
-        table {
+        #colander {
             border-collapse: separate;
-            border-spacing: 1.2vw 0.4vw;/*sqrt(3)=26/15,, x = 2*15 - 2r, y = 26/2 - r*/
+            border-spacing: 1.2vw 0.4vw;/*sqrt(3)=26/15, x = 2*15 - 2r, y = 26/2 - r*/
         }
-        tr {
+        #colander tr {
             display: table;
             margin: 0 auto;
         }
-        td {
+        #colander td {
             width: 1.8vw;
             height: 1.8vw;
             border: none;
             border-radius: 50%;
-            background-color: #e9e8f080;
+            background-color: #e9e8f040;
         }
         #info {
             position: absolute;
@@ -78,16 +78,50 @@
             margin: 0;
         }
         main {
-            min-height: 80vh;
+            min-height: 87.5vh;
             background: #e9e8f0;
             padding-inline: 2vw;
+        }
+        .content {
+            width: 50vw;
+            margin: auto;
+        }
+        #intro {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+        #text {
+            padding-right: 6.25%;
+        }
+        #education {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+        #education p {
+            margin: 0;
+        }
+        #image {
+            width: 50%;
+        }
+        #image img {
+            width: 100%;
         }
         footer {
             display: flex;
             justify-content: center; /* 水平居中 */
             align-items: center; /* 垂直居中 */
             background: #4b5974;
-            min-height: 20vh;
+            min-height: 12.5vh;
+        }
+        .date {
+            text-align: center;
+            color: #e9e8f0;
+        }
+        a {
+            text-decoration: none;
+            color: #4b5974; /* 设置字体颜色 */
         }
     </style>
 </head>
@@ -95,23 +129,44 @@
     <header>
         <nav>
             <span id="home"><a href="">主页</a></span>
-            <span id="menu"><a href="">文章</a><a href="">匿名箱</a></span>
+            <span id="menu"><a href="">归档</a><a href="">标签</a></span>
         </nav>
         <div id="layer"><table id="colander"></table></div>
-        <div id="info"><h1 id = "title">崔江任</h1><h2 id = "subtitle">Cui, Jiangren</h1></div>
+        <div id="info"><img src="assert/sign.svg"><h2 id = "subtitle" style="font-family: Segoe Script;">Cui, Jiangren</h1></div>
     </header>
     <main class="main">
         <div class="content">
-            <h1>标题</h1>
-            <h2>CS180</h2>
-            <p><a href="./cs180/proj_1/index.html">Project 1</a></p>
-            <p><a href="./cs180/proj_2/index.html">Project 2</a></p>
-            <p><a href="./cs180/proj_3/index.html">Project 3</a></p>
-            <p><a href="./cs180/proj_4/index.html">Project 4</a></p>
+            <br><br>
+            <h1>崔江任</h1>
+            <div id="intro">
+                <div id="text">
+                    <p>嗨👋，我是崔江任，是中国科学院大学计算机专业的本科生💻。在此之后，我会在中国科学院计算技术研究所的智能处理器研究中心读研📕。我不很清楚我对于什么方向感兴趣🌱，但我目前在做大语言模型相关的毕业设计🌆。</p>
+                    <p>我来自连云港。但是具体来说，我既是二分之一的、在七零年左右从黄岛去东北、而又在九十年代来连云港的黄岛人，也是二分之一的本地人。</p>
+                    <p style="margin: 0;">教育经历</p>
+                    <hr>
+                    <div id="education">
+                        <div><p>连云港市新海实验中学苍梧校区<br>江苏省新海高级中学<br>中国科学院大学<br>加州大学伯克利分校（访学）</p></div>
+                        <div><p>2015/08 &nbsp; 至 &nbsp; 2018/07<br>2018/08 &nbsp; 至 &nbsp; 2021/07<br>2021/08 &nbsp; 至 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 今<br>2024/08 &nbsp; 至 &nbsp; 2024/12</p></div>
+                    </div>
+                </div>
+                <div id="image">
+                    <br>
+                    <img src="assert/s_mosaic.png">
+                </div>
+            </div>
+            <hr>
+            <p>我现在的绩点是3.92/4，排名是10/102，以及此处有目前的<a href="assert/transcript.pdf">成绩单</a>。一些对我有影响而且成绩较好的课程有：线性代数A（89），微积分A（94），组成原理研讨（91），操作系统研讨（95），机器学习导论（95），视觉（CS180@UCB, A）以及算法(CS170@UCB, A)。</p>
+            <p>我的英语六级成绩是642，我的托福成绩是104（R27, L28, S23, W26）。我会写C, Python, Verilog, Latex以及汇编。</p>
+            <p>我编写过支持异常、虚存和前递的流水线处理器和抢占式调度的双核操作系统内核，为编译器添加过张量支持，也实现且训练过长短期记忆网络、扩散模型和神经辐射场等。</p>
+            <p>我暂时还没有出版物。</p>
+            <p>我是二一年江苏省优秀共青团员。在本科期间，我获得了三次三等学业奖学金。</p>
+            <p>我在二四年春季学期是中国科学院大学本科生学业发展中心的答疑志愿者。</p>
+            <p>我有钢琴和素描的十级，我也会乒乓球。</p>
+            <p>我前一段时间认真调研过Mamba和RWKV，也许之后会在这里更新一些笔记。</p>
         </div>
     </main>
     <footer>
-        <div class="date"></div>
+        <div class="date"><p>📞189 6137 9727 &nbsp; &nbsp; 📪cuijiangren21 at mails dot ucas dot ac dot cn</p></div>
     </footer>
 </body>
 <script>
