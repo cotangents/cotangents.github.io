@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>MyBlog</title>
+    <style>
+        body, html {
+            margin: 0;
+            height: 100%; /* 确保html和body的高度为100% */
+            width: 100%;
+            overflow-x: hidden;
+            background: #f5f5f5
+        }
+        header {
+            background-color: #292929;
+            background-size: cover; /* 使背景图片覆盖整个容器 */
+            background-position: center; /* 使背景图片居中 */
+            background-attachment: fixed;
+            height: 12.5vh; /* 设置容器高度为视口高度的100% */
+            position: relative;
+            display: flex;
+            justify-content: center;
+            font-weight: bold;
+        }
+        nav {
+            align-self: start;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            width: 100vw;
+            padding-top: 2vh;
+            padding-inline: 2vw;
+        }
+        nav a {
+            text-decoration: none;
+            padding-inline: 0.5vw;
+        }
+        #home a{
+            font-size: 1.2em; /* 设置字体大小 */
+            color: #f5f5f5; /* 设置字体颜色 */
+        }
+        #menu a {
+            font-size: 1.2em; /* 设置字体大小 */
+            color: #f5f5f5; /* 设置字体颜色 */
+        }
+        #layer {
+            position: absolute;
+            align-self: center;
+        }
+        #colander {
+            border-collapse: separate;
+            border-spacing: 0.6vw 0.2vw;/*sqrt(3)=26/15, x = 2*15 - 2r, y = 26/2 - r*/
+        }
+        #colander tr {
+            display: table;
+            margin: 0 auto;
+        }
+        #colander td {
+            width: 0.9vw;
+            height: 0.9vw;
+            border: none;
+            border-radius: 50%;
+            background-color: #fffaf020;
+        }
+        #info {
+            position: absolute;
+            align-self: center;
+            text-align: center;
+        }
+        #title {
+            font-size: 2.5em; /* 设置字体大小 */
+            color: #f5f5f5; /* 设置字体颜色 */
+            margin: 0;
+        }
+        #subtitle{
+            font-size: 2em; /* 设置字体大小 */
+            color: #f5f5f5; /* 设置字体颜色 */
+            margin: 0;
+        }
+        main {
+            min-height: 87.5vh;
+            background: #f5f5f5;
+        }
+        .content {
+            width: 50vw;
+            margin: auto;
+        }
+        #intro {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+        #text {
+            padding-right: 6.25%;
+        }
+        #education {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+        #education p {
+            margin: 0;
+        }
+        #image {
+            width: 50%;
+        }
+        #image img {
+            width: 100%;
+        }
+        footer {
+            display: flex;
+            justify-content: center; /* 水平居中 */
+            align-items: center; /* 垂直居中 */
+            background: #292929;
+            min-height: 12.5vh;
+        }
+        .date {
+            text-align: center;
+            color: #f5f5f5;
+        }
+        a {
+            text-decoration: none;
+            color: #292929; /* 设置字体颜色 */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <span id="home"><a href="./index.html">主页</a></span>
+            <span id="menu"><a href="./archive.html">归档</a><a href="">照片</a></span>
+        </nav>
+        <div id="layer"><table id="colander"></table></div>
+        <div id="info"><h2 id = "subtitle" style="font-family: Ink Free;">i z &nbsp; í ź</h2></div>
+    </header>
+    <main class="main">
+        <div class="content">
+            <br>
+            <h2 style="color: #292929">2025</h2>
+            <p>06-12 &nbsp; 咕咕咕</p>
+            <hr>
+        </div>
+    </main>
+    <footer>
+        <div class="date"><p>🐧 236 899 4791 &nbsp; &nbsp; 📪 cuijiangren21 at mails dot ucas dot ac dot cn</p></div>
+    </footer>
+</body>
+<script>
+    const row = 3, col = 39;
+    let colander = '';
+    for(let i = 1; i <= row; ++i){
+        colander += '<tr>';
+        for(let j = i & 1; j <= col; ++j){
+            colander += '<td></td>';
+        }
+        colander += '</tr>';
+    }
+    document.getElementById('colander').innerHTML = colander;
+</script>
+</html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
     <title>MyBlog</title>
@@ -9,10 +9,10 @@
             height: 100%; /* 确保html和body的高度为100% */
             width: 100%;
             overflow-x: hidden;
-            background: #e9e8f0
+            background: #f5f5f5/*rgb(136, 16, 153)*/
         }
         header {
-            background-image: url("wallpaper.png");
+            background-image: url("3072.png");
             background-size: cover; /* 使背景图片覆盖整个容器 */
             background-position: center; /* 使背景图片居中 */
             background-attachment: fixed;
@@ -37,11 +37,11 @@
         }
         #home a{
             font-size: 1.2em; /* 设置字体大小 */
-            color: #e9e8f0; /* 设置字体颜色 */
+            color: #292929; /* 设置字体颜色 */
         }
         #menu a {
             font-size: 1.2em; /* 设置字体大小 */
-            color: #29292d; /* 设置字体颜色 */
+            color: #292929; /* 设置字体颜色 */
         }
         #layer {
             position: absolute;
@@ -60,27 +60,21 @@
             height: 1.8vw;
             border: none;
             border-radius: 50%;
-            background-color: #e9e8f040;
+            background-color: #fffaf040;
         }
         #info {
             position: absolute;
             align-self: center;
             text-align: center;
         }
-        #title {
-            font-size: 2.5em; /* 设置字体大小 */
-            color: #e9e8f0; /* 设置字体颜色 */
-            margin: 0;
-        }
         #subtitle{
             font-size: 2em; /* 设置字体大小 */
-            color: #e9e8f0; /* 设置字体颜色 */
+            color: #292929; /* 设置字体颜色 */
             margin: 0;
         }
         main {
             min-height: 87.5vh;
-            background: #e9e8f0;
-            padding-inline: 2vw;
+            background: #f5f5f5;
         }
         .content {
             width: 50vw;
@@ -92,7 +86,7 @@
             width: 100%;
         }
         #text {
-            padding-right: 6.25%;
+            width: 62.5%;
         }
         #education {
             display: flex;
@@ -103,7 +97,11 @@
             margin: 0;
         }
         #image {
-            width: 50%;
+            width: 31.25%;
+            padding-top: 3.125%;
+            padding-inline: 3.125%;
+            display: flex;
+            align-items: center;
         }
         #image img {
             width: 100%;
@@ -112,61 +110,60 @@
             display: flex;
             justify-content: center; /* 水平居中 */
             align-items: center; /* 垂直居中 */
-            background: #4b5974;
+            background: #252015;
             min-height: 12.5vh;
         }
         .date {
             text-align: center;
-            color: #e9e8f0;
+            color: #f5f5f5;
         }
         a {
             text-decoration: none;
-            color: #4b5974; /* 设置字体颜色 */
+            color: #292929; /* 设置字体颜色 */
         }
     </style>
 </head>
 <body>
     <header>
         <nav>
-            <span id="home"><a href="">主页</a></span>
-            <span id="menu"><a href="">归档</a><a href="">标签</a></span>
+            <span id="home"><a href="./index.html">主页</a></span>
+            <span id="menu"><a href="./archive.html">归档</a><a href="">照片</a></span>
         </nav>
         <div id="layer"><table id="colander"></table></div>
-        <div id="info"><img src="assert/sign.svg"><h2 id = "subtitle" style="font-family: Segoe Script;">Cui, Jiangren</h1></div>
+        <div id="info"><br><br><br><img src="assert/ae002b.svg" style="width: 15.625%;"><h2 id = "subtitle" style="font-family: Segoe Script;">Cui, Jiangren</h2></div>
     </header>
     <main class="main">
         <div class="content">
-            <br><br>
-            <h1>崔江任</h1>
             <div id="intro">
                 <div id="text">
-                    <p>嗨👋，我是崔江任，是中国科学院大学计算机专业的本科生💻。在此之后，我会在中国科学院计算技术研究所的智能处理器研究中心读研📕。我不很清楚我对于什么方向感兴趣🌱，但我目前在做大语言模型相关的毕业设计🌆。</p>
-                    <p>我来自连云港。但是具体来说，我既是二分之一的、在七零年左右从黄岛去东北、而又在九十年代来连云港的黄岛人，也是二分之一的本地人。</p>
+                    <h1 style="color: #292929">崔江任</h1>
+                    <p>嗨👋，我是崔江任，是中国科学院大学计算机专业的本科生。在此之后，我会在中国科学院计算技术研究所的智能处理器研究中心读研。我目前在做大语言模型相关。</p>
+                    <p>我来自连云港。我是 1/2 [ 胶南（至六七十年代）→ 东北（至九十年代）→ 连云港 ] 人 + 1/2 [ 连云港 ] 人。</p>
                     <p style="margin: 0;">教育经历</p>
                     <hr>
                     <div id="education">
                         <div><p>连云港市新海实验中学苍梧校区<br>江苏省新海高级中学<br>中国科学院大学<br>加州大学伯克利分校（访学）</p></div>
-                        <div><p>2015/08 &nbsp; 至 &nbsp; 2018/07<br>2018/08 &nbsp; 至 &nbsp; 2021/07<br>2021/08 &nbsp; 至 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 今<br>2024/08 &nbsp; 至 &nbsp; 2024/12</p></div>
+                        <div><p>2015/09 &nbsp; 至 &nbsp; 2018/07<br>2018/09 &nbsp; 至 &nbsp; 2021/07<br>2021/09 &nbsp; 至 &nbsp; 2025/07<br>2024/08 &nbsp; 至 &nbsp; 2024/12</p></div>
                     </div>
                 </div>
                 <div id="image">
-                    <br>
-                    <img src="assert/s_mosaic.png">
+                    <img src="assert/color.jpg">
                 </div>
             </div>
             <hr>
-            <p>我现在的绩点是3.92/4，排名是10/102，以及此处有目前的<a href="assert/transcript.pdf">成绩单</a>。一些对我有影响而且成绩较好的课程有：线性代数A（89），微积分A（94），组成原理研讨（91），操作系统研讨（95），机器学习导论（95），视觉（CS180@UCB, A）以及算法(CS170@UCB, A)。</p>
+            <p>我本科平均绩点3.93/4，排名6/102，详情见于<a href="assert/transcript.pdf">此处</a>。一些对我有影响而且成绩较好的课程有：线性代数A（89），微积分A（94），组成原理研讨（91），操作系统研讨（95），机器学习导论（95），视觉（CS180@UCB, A）以及算法（CS170@UCB, A）。一些和我专业或方向联系较小不过成绩较好的课程有：力学A01（96），热学H（91），计算机科学导论（96），编译原理（95）。</p>
             <p>我的英语六级成绩是642，我的托福成绩是104（R27, L28, S23, W26）。我会写C, Python, Verilog, Latex以及汇编。</p>
-            <p>我编写过支持异常、虚存和前递的流水线处理器和抢占式调度的双核操作系统内核，为编译器添加过张量支持，也实现且训练过长短期记忆网络、扩散模型和神经辐射场等。</p>
+            <p>我编写过支持异常、虚存和前递的流水线处理器和抢占式调度的双核操作系统内核，为编译器添加过张量支持，也实现且训练过长短期记忆网络、扩散模型和神经辐射场等。我本科毕业设计做的是键值缓存压缩。</p>
             <p>我暂时还没有出版物。</p>
             <p>我是二一年江苏省优秀共青团员。在本科期间，我获得了三次三等学业奖学金。</p>
             <p>我在二四年春季学期是中国科学院大学本科生学业发展中心的答疑志愿者。</p>
-            <p>我有钢琴和素描的十级，我也会乒乓球。</p>
-            <p>我前一段时间认真调研过Mamba和RWKV，也许之后会在这里更新一些笔记。</p>
+            <p>我有钢琴和素描的十级，我也会一点点乒乓球。</p>
+            <p>我对意识很感兴趣，因此选择计算机专业。我对Transformer深感怀疑。</p>
         </div>
     </main>
+    <p style="margin: 0; padding: 0.125em; text-align: center; background-color: rgb(136, 16, 153); color: #f5f5f5; font-family: 'KaiTi'; font-weight: bold;">新海浩浩 永继荣光</p>
     <footer>
-        <div class="date"><p>📞189 6137 9727 &nbsp; &nbsp; 📪cuijiangren21 at mails dot ucas dot ac dot cn</p></div>
+        <div class="date"><p>🐧 236 899 4791 &nbsp; &nbsp; 📪 cuijiangren21 at mails dot ucas dot ac dot cn</p></div>
     </footer>
 </body>
 <script>
