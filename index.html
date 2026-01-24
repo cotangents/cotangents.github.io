@@ -9,7 +9,8 @@
             height: 100%; /* 确保html和body的高度为100% */
             width: 100%;
             overflow-x: hidden;
-            background: #f0f0f0/*rgb(136, 16, 153)*/
+            background: #f0f0f0; /*rgb(136, 16, 153)*/
+            scrollbar-width: none;
         }
         header {
             /*background-image: url("3072.png");*/
@@ -68,7 +69,8 @@
             text-align: center;
         }
         #star {
-            color: #2c2824;
+            color: #ffff00;
+            text-shadow: 0 0 16px #ffee00;
         }
         #star p {
             margin: 0;
@@ -79,13 +81,13 @@
             margin: 0;
         }
         main {
-            min-height: 87.5vh;
+            min-height: 93.75vh;
             background: #f0f0f0;
         }
         .content {
-            width: 50vw;
+            width: 896px;
             margin: auto;
-            padding-top: 0.5rem;
+            padding-block: 1.25rem;
         }
         #intro {
             display: flex;
@@ -95,46 +97,49 @@
         #text {
             width: 62.5%;
         }
-        #education {
+        #text h4{
+            margin-bottom: 0;
+        }
+        .table {
             display: flex;
             justify-content: space-between;
             width: 100%;
         }
-        #education p {
+        #text p{
+            margin-top: 0;
+        }
+        .table p {
             margin: 0;
         }
         #image {
             width: 31.25%;
-            padding-inline: 3.125%;
             display: flex;
-            align-items: center;
+            align-items: baseline;
         }
         #image img {
             width: 100%;
+            border-radius: 0.25rem;
+            box-shadow: 0 2px 5px 0 rgba(0,0,0,0.25),0 2px 10px 0 rgba(0,0,0,0.125);
         }
         footer {
             display: flex;
             justify-content: center; /* 水平居中 */
             align-items: center; /* 垂直居中 */
             background: #2c2824;
-            min-height: 12.5vh;
+            min-height: 6.25vh;
         }
         .date {
             text-align: center;
             color: #f0f0f0;
+        }
+        .date p {
+            margin: 0;
         }
         a {
             text-decoration: none;
             color: #282828; /* 设置字体颜色 */
         }
     </style>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CRXQFFXE0W"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-CRXQFFXE0W');
-    </script>
 </head>
 <body>
     <header>
@@ -146,37 +151,51 @@
         <div id="info">
             <div id="star"><p style="font-size: 0.75rem;">★</p><p style="font-size: 0.25rem;">★ &emsp;&emsp;&emsp;&emsp;&emsp; ★</p><p style="font-size: 0.25rem;">★ &emsp; ★</p></div>
             <br>
-            <img src="assert/colorful.svg" style="width: 15.625%;">
-            <h2 id = "subtitle" style="font-family: Segoe Script; padding-top: 1rem; padding-bottom: 2rem;">Cui, Jiangren</h2>
+            <img src="assert/simple loong.svg" style="width: 218px;">
+            <h2 id = "subtitle" style="font-family: Segoe Script; padding-top: 1rem; padding-bottom: 2rem; color: #2c282420;">Cuī, Jiāngrèn</h2>
         </div>
     </header>
     <main class="main">
         <div class="content">
+            <h1 style="color: #282828">崔江任</h1>
             <div id="intro">
                 <div id="text">
-                    <h1 style="color: #282828">崔江任</h1>
-                    <p>嗨👋，我是崔江任，是中国科学院大学计算机科学与技术专业的本科生。在此之后，我会在中国科学院计算技术研究所的智能处理器研究中心读研。我目前在做大语言模型相关。</p>
-                    <p>我来自连云港。我是 1/2 [ 山东胶南（至六十年代）→ 东北松花江（至九十年代）→ 江苏连云港 ] 人 + 1/2 [ 连云港 ] 人。</p>
-                    <p style="margin: 0;">教育经历</p>
+                    <p style="text-indent: 2em;">嗨👋，我是崔江任，是中国科学院计算技术研究所智能处理器研究中心的研究生。在此之前，我在中国科学院大学计算机科学与技术专业获得学士学位。我目前在做大语言模型相关。</p>
+                    <p style="text-indent: 2em;">我来自连云港。我是 ½ [ 山东胶南（至六十年代）→ 东北松花江（至九十年代）→ 江苏连云港 ] 人 + ½ [ 连云港 ] 人。</p>
+                    <h4>教育</h4>
                     <hr>
-                    <div id="education">
-                        <div><p>江苏省新海高级中学<br>中国科学院大学 &nbsp; 均绩 3.93/4 &nbsp; 排名 6/102<br>加州大学伯克利分校（访学）</p></div>
-                        <div><p>2018/09 &nbsp; 至 &nbsp; 2021/07<br>2021/09 &nbsp; 至 &nbsp; 2025/07<br>2024/08 &nbsp; 至 &nbsp; 2024/12</p></div>
+                    <div class="table">
+                        <div><p>江苏省新海高级中学<br>中国科学院大学 &nbsp; <a href="assert/transcript.pdf">均绩 3.93/4 &nbsp; 排名 6/102</a><br>加州大学伯克利分校（访学）</p></div>
+                        <div style="text-align: right;"><p>2018/09 - 2021/07<br>2021/09 - 2025/07<br>2024/08 - 2024/12</p></div>
+                    </div>
+                    <h4>语言</h4>
+                    <hr>
+                    <div class="table">
+                        <div><p>英语：CET6 642, TOEFL 104 (R27, L28, S23, W26)<br>计算机：C, Python, Verilog, Assembly</p></div>
+                    </div>
+                    <h4>荣誉</h4>
+                    <hr>
+                    <div class="table">
+                        <div><p>江苏省优秀共青团员<br>中国科学院大学三等学业奖学金</p></div>
+                        <div style="text-align: right;"><p>2021<br>2022, 2023, 2024</p></div>
+                    </div>
+                    <h4>服务</h4>
+                    <hr>
+                    <div class="table">
+                        <div><p>中国科学院大学本科学业答疑志愿者<br>中国科学院大学本科招生工作志愿者</p></div>
+                        <div style="text-align: right;"><p>2024/03 - 2024/07<br>2025/06</p></div>
+                    </div>
+                    <h4>爱好</h4>
+                    <hr>
+                    <div class="table">
+                        <div><p>钢琴（十级），素描（十级），乒乓球（会一点点）</p></div>
                     </div>
                 </div>
+                <div><hr style="height: 100%; margin: 0; border-block: 0;"></div>
                 <div id="image">
-                    <img src="assert/color.jpg">
+                    <img src="assert/sea.jpg">
                 </div>
             </div>
-            <hr>
-            <p>我一些重要且成绩较好的课程有：线性代数A（89），微积分A（94），组成原理研讨（91），操作系统研讨（95），机器学习导论（95），视觉（CS180@UCB, A），以及算法（CS170@UCB, A）。一些与我专业或方向联系较小不过成绩较好的课程有：力学A01（96），热学H（91），计算机科学导论（96），编译原理（95）。详情见于<a href="assert/transcript.pdf">此处</a>。</p>
-            <p>我的英语六级成绩是642，我的托福成绩是104（R27, L28, S23, W26）。我会写C, Python, Verilog, Latex以及汇编。</p>
-            <p>我编写过支持异常、虚存和前递的流水线处理器和抢占式调度的双核操作系统内核，为编译器添加过张量支持，也实现且训练过长短期记忆网络、扩散模型和神经辐射场等。我本科毕业设计做的是大模型键值缓存压缩。</p>
-            <p>我暂时还没有出版物。</p>
-            <p>我是二一年江苏省优秀共青团员。在本科期间，我获得三次三等学业奖学金。</p>
-            <p>我在二四年春季学期是中国科学院大学本科生学业发展中心的答疑志愿者。</p>
-            <p>我有钢琴和素描的十级，我也会一点点乒乓球。</p>
-            <p>我对意识很感兴趣，因此选择计算机专业和人工智能方向。</p>
         </div>
     </main>
     <footer>
